@@ -11,4 +11,3 @@ Sentiment Analysis: The backend communicates with a Flask API to process text an
 MongoDB Integration: Stores sentiment results along with the corresponding text in a MongoDB database.
 Frontend UI: Built with React.js to provide a user-friendly interface for inputting text and displaying sentiment results.
 Full MERN Stack: Uses MongoDB, Express, React, and Node.js to create a scalable website.
->>>>>>> 3c721e13d4ea342ce309228ba77dd390a25991ea
