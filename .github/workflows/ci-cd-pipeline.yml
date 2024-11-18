@@ -1,0 +1,60 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    services:
+      docker:
+        image: docker:19.03.12
+        options: --privileged
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install Node.js dependencies
+      run: |
+        cd backend
+        npm install
+
+    - name: Build Node.js app
+      run: |
+        cd backend
+        npm run build
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+
+    - name: Install Python dependencies
+      run: |
+        cd nlp_service
+        pip install -r requirements.txt
+
+    - name: Build and deploy Docker container
+      run: |
+        docker-compose -f docker-compose.yml up --build -d
+
+    - name: Run Tests
+      run: |
+        cd backend
+        npm test
+
+    - name: Deploy to Production (if tests pass)
+      run: |
+        ssh -i ${{ secrets.SSH_PRIVATE_KEY }} user@your-server-ip 'cd /path/to/your/app && docker-compose pull && docker-compose up -d'
