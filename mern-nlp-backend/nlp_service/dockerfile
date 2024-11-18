@@ -1,14 +1,19 @@
 # Python Flask Dockerfile
+# Python Flask Dockerfile
 FROM python:3.9
 
 WORKDIR /app
 
+# Copy requirements.txt and install dependencies
 COPY requirements.txt ./
-
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Copy the rest of the application files
 COPY . .
 
+# Expose port for Flask application
 EXPOSE 5001
 
+# Command to run the Flask app
 CMD ["python", "nlp_server.py"]
+
